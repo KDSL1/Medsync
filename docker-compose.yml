@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: medsync-mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: healthcare_ai_demo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: medsync-api
+    restart: always
+    depends_on:
+      - mongodb
+    environment:
+      PORT: 8000
+      HOST: 0.0.0.0
+      MONGODB_URI: mongodb://mongodb:27017/healthcare_ai_demo
+      MONGODB_DB_NAME: healthcare_ai_demo
+      JWT_SECRET: medsync-production-secret-replace-in-real-env
+      JWT_REFRESH_SECRET: medsync-refresh-secret-replace-in-real-env
+    ports:
+      - "8000:8000"
+
+  web:
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile
+    container_name: medsync-web
+    restart: always
+    depends_on:
+      - api
+    environment:
+      VITE_API_URL: http://localhost:8000/api
+    ports:
+      - "5173:80"
+
+volumes:
+  mongo_data:

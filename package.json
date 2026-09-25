@@ -1,0 +1,20 @@
+{
+  "name": "medsync-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:api": "uvicorn app.main:app --app-dir backend --reload --port 8000",
+    "dev:web": "npm --prefix apps/web run dev",
+    "dev": "concurrently \"npm run dev:api\" \"npm run dev:web\"",
+    "build": "npm --prefix apps/web run build",
+    "test": "pytest backend/tests/test_rbac_safety.py -v",
+    "seed": "python backend/scripts/seed_database.py"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
