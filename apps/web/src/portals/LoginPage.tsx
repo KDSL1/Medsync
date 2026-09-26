@@ -25,22 +25,22 @@ export const LoginPage: React.FC = () => {
       // Route according to user role
       switch (user.role) {
         case 'SUPER_ADMIN':
-          navigate('/super-admin');
+          navigate('/app/super-admin');
           break;
         case 'HOSPITAL_ADMIN':
-          navigate('/hospital-admin');
+          navigate('/app/hospital-admin');
           break;
         case 'DOCTOR':
-          navigate('/doctor');
+          navigate('/app/doctor');
           break;
         case 'RECEPTIONIST':
-          navigate('/receptionist');
+          navigate('/app/receptionist');
           break;
         case 'PATIENT':
-          navigate('/patient');
+          navigate('/app/patient');
           break;
         default:
-          navigate('/');
+          navigate('/app');
       }
     } catch (err: any) {
       setError(err.response?.data?.message || 'Login failed. Please check your credentials.');

@@ -181,10 +181,32 @@ export const PortalLayout: React.FC<PortalLayoutProps> = ({
         </header>
 
         {/* Scrollable Portal View */}
-        <main className="flex-1 overflow-y-auto p-6">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 pb-20 md:pb-6">
           {children}
         </main>
       </div>
+
+      {/* Mobile / Android Bottom Navigation Bar */}
+      {tabs.length > 0 && (
+        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-800 flex items-center justify-around py-2 px-2 z-40 safe-bottom">
+          {tabs.slice(0, 5).map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => onTabChange && onTabChange(tab.id)}
+                className={`flex flex-col items-center justify-center py-1 px-2 rounded-lg text-[10px] transition ${
+                  isActive ? 'text-sky-400 font-bold' : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                <Icon className={`w-5 h-5 mb-0.5 ${isActive ? 'text-sky-400' : 'text-slate-400'}`} />
+                <span className="truncate max-w-[64px]">{tab.label}</span>
+              </button>
+            );
+          })}
+        </nav>
+      )}
     </div>
   );
 };

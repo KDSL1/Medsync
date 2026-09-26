@@ -1,9 +1,22 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+// Android Emulator host loopback is 10.0.2.2 instead of localhost
+const getApiBaseUrl = () => {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+  // Check if running inside Capacitor Android native webview
+  const isCapacitor = typeof (window as any)?.Capacitor !== 'undefined';
+  const isAndroid = isCapacitor && (window as any)?.Capacitor?.getPlatform() === 'android';
+  if (isAndroid) {
+    // 10.0.2.2 maps to the host machine's localhost from Android Emulator
+    return 'http://10.0.2.2:8000/api';
+  }
+  return 'http://localhost:8000/api';
+};
 
 export const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: getApiBaseUrl(),
   headers: {
     'Content-Type': 'application/json',
   },
