@@ -29,19 +29,25 @@ export const MarketingNavbar: React.FC = () => {
           </div>
 
           {/* Action Buttons */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-3">
+            <a
+              href="#app-access"
+              className="text-xs font-medium text-emerald-400 hover:text-emerald-300 px-3 py-1.5 rounded-lg border border-emerald-500/20 bg-emerald-950/30 transition flex items-center gap-1.5"
+            >
+              <span>Android APK</span>
+            </a>
             <Link
               to="/login"
-              className="text-sm font-semibold text-slate-200 hover:text-white px-3 py-2 rounded-lg transition"
+              className="text-xs font-medium text-slate-300 hover:text-white px-3 py-1.5 rounded-lg transition"
             >
               Sign In
             </Link>
             <Link
-              to="/login"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-sky-500 to-teal-500 hover:from-sky-400 hover:to-teal-400 text-white text-sm font-semibold px-4 py-2 rounded-xl shadow-lg shadow-sky-500/25 transition active:scale-95"
+              to="/app"
+              className="inline-flex items-center gap-1.5 bg-sky-500 hover:bg-sky-400 text-white text-xs font-semibold px-4 py-2 rounded-xl shadow-md shadow-sky-500/20 transition active:scale-95"
             >
-              Get Started
-              <ArrowRight className="w-4 h-4" />
+              <span>Launch App</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 

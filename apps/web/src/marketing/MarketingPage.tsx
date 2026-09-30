@@ -377,6 +377,52 @@ export const MarketingPage: React.FC = () => {
         </div>
       </section>
 
+      {/* App Access & Mobile Download Banner */}
+      <section className="py-20 border-t border-slate-900 bg-slate-950/70 relative" id="app-access">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="glass-panel p-8 sm:p-12 rounded-3xl relative overflow-hidden border border-sky-500/20">
+            <div className="ambient-glow top-0 right-0 w-80 h-80 bg-sky-500/10 pointer-events-none" />
+            <div className="max-w-2xl relative z-10">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-medium mb-4">
+                <Smartphone className="w-3.5 h-3.5" />
+                <span>Multi-Platform Available</span>
+              </div>
+              <h2 className="text-3xl font-bold text-white tracking-tight mb-3">
+                Experience Medsync on Web & Android
+              </h2>
+              <p className="text-sm text-slate-400 leading-relaxed mb-8">
+                Seamlessly launch the authenticated clinical web application or install the native Android APK package directly to your phone for mobile report uploads and medicine reminders.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-4">
+                <Link
+                  to="/app"
+                  className="btn-primary-pro inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition shadow-md"
+                >
+                  <Activity className="w-4 h-4" />
+                  <span>Launch Web Portal</span>
+                </Link>
+
+                <a
+                  href="/app-debug.apk"
+                  download
+                  className="btn-secondary-pro inline-flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition"
+                >
+                  <Download className="w-4 h-4 text-emerald-400" />
+                  <span>Download Android APK</span>
+                </a>
+              </div>
+
+              <div className="mt-6 flex items-center gap-4 text-xs text-slate-500 font-mono">
+                <span>Package: com.medsync.healthcare</span>
+                <span>•</span>
+                <span>Build: Android 14+ / JVM 21</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* FAQ — Minimalist Clean Accordion */}
       <section className="py-24 border-t border-slate-900 bg-[#030712]" id="faq">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
