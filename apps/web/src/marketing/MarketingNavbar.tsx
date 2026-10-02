@@ -24,6 +24,7 @@ export const MarketingNavbar: React.FC = () => {
             <a href="#features" className="text-sm font-medium text-slate-300 hover:text-white transition">Features</a>
             <a href="#how-it-works" className="text-sm font-medium text-slate-300 hover:text-white transition">How it Works</a>
             <a href="#solutions" className="text-sm font-medium text-slate-300 hover:text-white transition">Solutions</a>
+            <a href="#pricing" className="text-sm font-medium text-slate-300 hover:text-white transition">Pricing</a>
             <a href="#security" className="text-sm font-medium text-slate-300 hover:text-white transition">Security & AI</a>
             <a href="#faq" className="text-sm font-medium text-slate-300 hover:text-white transition">FAQ</a>
           </div>

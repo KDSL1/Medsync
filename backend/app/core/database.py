@@ -12,9 +12,16 @@ class DatabaseManager:
     def connect(self):
         try:
             logger.info(f"Connecting to MongoDB at {settings.MONGODB_URI.split('@')[-1]}...")
-            self.client = MongoClient(settings.MONGODB_URI, serverSelectionTimeoutMS=5000)
-            # Verify connection
-            self.client.admin.command('ping')
+            try:
+                import certifi
+                ca_file = certifi.where()
+                self.client = MongoClient(settings.MONGODB_URI, serverSelectionTimeoutMS=5000, tlsCAFile=ca_file)
+                self.client.admin.command('ping')
+            except Exception:
+                # Fallback for Windows TLS environments
+                self.client = MongoClient(settings.MONGODB_URI, serverSelectionTimeoutMS=5000, tlsAllowInvalidCertificates=True)
+                self.client.admin.command('ping')
+
             self.db = self.client[settings.MONGODB_DB_NAME]
             logger.info(f"Connected to MongoDB database: '{settings.MONGODB_DB_NAME}'")
             self.create_indexes()

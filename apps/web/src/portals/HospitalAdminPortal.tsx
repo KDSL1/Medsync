@@ -11,7 +11,11 @@ import {
   Clock,
   UserCheck,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  CreditCard,
+  Receipt,
+  Sparkles,
+  ShieldCheck
 } from 'lucide-react';
 
 export const HospitalAdminPortal: React.FC = () => {
@@ -89,6 +93,7 @@ export const HospitalAdminPortal: React.FC = () => {
     { id: 'receptionists', label: 'Receptionists', icon: Users },
     { id: 'patients', label: 'Patients', icon: UserCheck },
     { id: 'departments', label: 'Departments', icon: Building2 },
+    { id: 'billing', label: 'Billing & Plan', icon: CreditCard },
   ];
 
   return (
@@ -245,6 +250,107 @@ export const HospitalAdminPortal: React.FC = () => {
                     ))}
                   </tbody>
                 </table>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'billing' && (
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-base font-bold text-slate-900">Hospital Subscription & Quota Usage</h3>
+                <p className="text-xs text-slate-500">Manage your SaaS tier, active quotas, and invoice history.</p>
+              </div>
+
+              {/* Current Active Plan Card */}
+              <div className="bg-gradient-to-r from-slate-900 via-sky-950 to-slate-900 p-6 rounded-2xl text-white border border-sky-800/40 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-semibold text-[11px] border border-emerald-500/30">
+                      ACTIVE SUBSCRIPTION
+                    </span>
+                    <span className="text-xs text-slate-400 font-mono">ID: HOSP-DEMO-001</span>
+                  </div>
+                  <h2 className="text-2xl font-black tracking-tight text-white flex items-center gap-2">
+                    <span>Hospital Pro Tier</span>
+                    <Sparkles className="w-5 h-5 text-sky-400" />
+                  </h2>
+                  <p className="text-xs text-slate-300 mt-1 max-w-md">
+                    Multi-department clinical automation, priority OCR pipeline compute, and unlimited patient registration.
+                  </p>
+                </div>
+
+                <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 text-right">
+                  <div className="text-2xl font-black text-sky-400">$199.00 <span className="text-xs text-slate-400 font-normal">/ month</span></div>
+                  <p className="text-[11px] text-emerald-400 mt-1">Renews automatically via Stripe</p>
+                </div>
+              </div>
+
+              {/* Usage Quota Meters */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                  <div className="flex justify-between items-center text-xs font-semibold text-slate-700 mb-2">
+                    <span>Doctor Seats Quota</span>
+                    <span className="font-mono text-sky-600">{doctors.length} / 25 Used</span>
+                  </div>
+                  <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                    <div className="bg-sky-500 h-2 rounded-full" style={{ width: `${Math.min(100, (doctors.length / 25) * 100)}%` }} />
+                  </div>
+                  <p className="text-[11px] text-slate-500 mt-2">17 doctor seats available on current tier.</p>
+                </div>
+
+                <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                  <div className="flex justify-between items-center text-xs font-semibold text-slate-700 mb-2">
+                    <span>AI Report Scans Quota</span>
+                    <span className="font-mono text-teal-600">15 / 1,000 Scans</span>
+                  </div>
+                  <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                    <div className="bg-teal-500 h-2 rounded-full" style={{ width: '1.5%' }} />
+                  </div>
+                  <p className="text-[11px] text-slate-500 mt-2">985 high-speed OCR scans remaining this month.</p>
+                </div>
+
+                <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                  <div className="flex justify-between items-center text-xs font-semibold text-slate-700 mb-2">
+                    <span>Tenant Health & Compliance</span>
+                    <span className="font-mono text-emerald-600">100% HIPAA</span>
+                  </div>
+                  <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                    <div className="bg-emerald-500 h-2 rounded-full" style={{ width: '100%' }} />
+                  </div>
+                  <p className="text-[11px] text-slate-500 mt-2">Audit trail and access logs continuously synced.</p>
+                </div>
+              </div>
+
+              {/* Billing History / Invoices */}
+              <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+                <div className="flex justify-between items-center mb-4">
+                  <h4 className="text-sm font-bold text-slate-900">Recent Invoices & Receipts</h4>
+                  <span className="text-[11px] text-sky-600 font-semibold cursor-pointer hover:underline">Download All Receipts (.CSV)</span>
+                </div>
+                <div className="divide-y divide-slate-100 text-xs">
+                  <div className="py-3 flex justify-between items-center">
+                    <div>
+                      <p className="font-bold text-slate-900">Invoice #INV-202610-001</p>
+                      <p className="text-[11px] text-slate-400">Hospital Pro Tier (Monthly Recurring)</p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-semibold text-[10px]">PAID</span>
+                      <span className="font-mono font-bold text-slate-900">$199.00</span>
+                      <button className="text-sky-600 hover:text-sky-700 font-medium">PDF</button>
+                    </div>
+                  </div>
+                  <div className="py-3 flex justify-between items-center">
+                    <div>
+                      <p className="font-bold text-slate-900">Invoice #INV-202609-001</p>
+                      <p className="text-[11px] text-slate-400">Hospital Pro Tier (Monthly Recurring)</p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-semibold text-[10px]">PAID</span>
+                      <span className="font-mono font-bold text-slate-900">$199.00</span>
+                      <button className="text-sky-600 hover:text-sky-700 font-medium">PDF</button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           )}

@@ -19,6 +19,7 @@ from app.routers import (
     notifications,
     followups,
     search,
+    billing,
 )
 
 @asynccontextmanager
@@ -106,3 +107,4 @@ app.include_router(ai.router, prefix=api_prefix)
 app.include_router(notifications.router, prefix=api_prefix)
 app.include_router(followups.router, prefix=api_prefix)
 app.include_router(search.router, prefix=api_prefix)
+app.include_router(billing.router, prefix=api_prefix)

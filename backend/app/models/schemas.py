@@ -94,3 +94,22 @@ class MedicineActionRequest(BaseModel):
 
 class AIChatRequest(BaseModel):
     message: str
+
+class CheckoutRequest(BaseModel):
+    planTier: str = Field(..., description="STARTER, PROFESSIONAL, ENTERPRISE, or CARE_PLUS")
+    billingCycle: str = Field("MONTHLY", description="MONTHLY or ANNUAL")
+    currency: str = Field("USD", description="USD or INR")
+
+class SubscriptionResponse(BaseModel):
+    tenantId: str
+    planTier: str
+    billingCycle: str
+    status: str
+    price: float
+    currency: str
+    doctorLimit: int
+    doctorCount: int
+    aiReportLimit: int
+    aiReportUsed: int
+    validUntil: str
+

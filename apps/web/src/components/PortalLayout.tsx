@@ -75,10 +75,10 @@ export const PortalLayout: React.FC<PortalLayoutProps> = ({
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row">
       {/* Sidebar Navigation */}
-      <aside className="w-full md:w-64 bg-slate-900 text-slate-300 flex flex-col flex-shrink-0 border-r border-slate-800">
+      <aside className="w-full md:w-64 bg-slate-900 text-slate-300 flex flex-col flex-shrink-0 border-r border-slate-800 perspective-1000">
         <div className="p-5 flex items-center gap-3 border-b border-slate-800">
-          <div className="p-2 bg-sky-500 rounded-xl text-white shadow-lg shadow-sky-500/20">
-            <Activity className="w-6 h-6" />
+          <div className="p-2.5 bg-gradient-to-br from-sky-500 to-sky-600 rounded-xl text-white shadow-lg shadow-sky-500/25 badge-3d animate-float-3d-slow">
+            <Activity className="w-5 h-5" />
           </div>
           <div>
             <h1 className="text-lg font-bold text-white tracking-tight">Medsync</h1>
@@ -89,7 +89,7 @@ export const PortalLayout: React.FC<PortalLayoutProps> = ({
         </div>
 
         {/* Tab Items */}
-        <nav className="flex-1 p-4 space-y-1.5 overflow-y-auto">
+        <nav className="flex-1 p-4 space-y-1.5 overflow-y-auto preserve-3d">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -97,14 +97,14 @@ export const PortalLayout: React.FC<PortalLayoutProps> = ({
               <button
                 key={tab.id}
                 onClick={() => onTabChange && onTabChange(tab.id)}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
+                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition card-3d cursor-pointer ${
                   isActive
-                    ? 'bg-sky-600 text-white shadow-md shadow-sky-600/20'
+                    ? 'btn-3d bg-sky-600 text-white shadow-md shadow-sky-600/30'
                     : 'hover:bg-slate-800/80 text-slate-300 hover:text-white'
                 }`}
               >
-                <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-slate-400'}`} />
-                <span>{tab.label}</span>
+                <Icon className={`w-4 h-4 translate-z-10 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                <span className="translate-z-10">{tab.label}</span>
               </button>
             );
           })}
@@ -180,15 +180,15 @@ export const PortalLayout: React.FC<PortalLayoutProps> = ({
           </div>
         </header>
 
-        {/* Scrollable Portal View */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 pb-20 md:pb-6">
+        {/* Scrollable Portal View with 3D perspective */}
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 pb-20 md:pb-6 perspective-1200">
           {children}
         </main>
       </div>
 
-      {/* Mobile / Android Bottom Navigation Bar */}
+      {/* Mobile / Android Bottom Navigation Bar with 3D tactile elevation */}
       {tabs.length > 0 && (
-        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-800 flex items-center justify-around py-2 px-2 z-40 safe-bottom">
+        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-lg border-t border-slate-800 flex items-center justify-around py-2 px-2 z-40 safe-bottom preserve-3d">
           {tabs.slice(0, 5).map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -196,11 +196,11 @@ export const PortalLayout: React.FC<PortalLayoutProps> = ({
               <button
                 key={tab.id}
                 onClick={() => onTabChange && onTabChange(tab.id)}
-                className={`flex flex-col items-center justify-center py-1 px-2 rounded-lg text-[10px] transition ${
-                  isActive ? 'text-sky-400 font-bold' : 'text-slate-400 hover:text-slate-200'
+                className={`flex flex-col items-center justify-center py-1.5 px-2.5 rounded-xl text-[10px] transition-all cursor-pointer ${
+                  isActive ? 'text-sky-400 font-bold badge-3d bg-sky-500/10 scale-105' : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
-                <Icon className={`w-5 h-5 mb-0.5 ${isActive ? 'text-sky-400' : 'text-slate-400'}`} />
+                <Icon className={`w-5 h-5 mb-0.5 ${isActive ? 'text-sky-400 animate-pulse' : 'text-slate-400'}`} />
                 <span className="truncate max-w-[64px]">{tab.label}</span>
               </button>
             );

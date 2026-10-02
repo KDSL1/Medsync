@@ -279,3 +279,74 @@ def analyze_report(id: str, current_user: AuthenticatedUser = Depends(get_curren
         updated_analysis["analyzedAt"] = updated_analysis["analyzedAt"].isoformat()
 
     return {"success": True, "message": "Report re-analyzed successfully", "data": updated_analysis}
+
+@router.get("/trends/{patient_id}")
+def get_biomarker_trends(patient_id: str, current_user: AuthenticatedUser = Depends(get_current_user)):
+    """Extracts chronological biomarker data (e.g. Hemoglobin, Glucose, Creatinine) across patient reports."""
+    if current_user.role == "SUPER_ADMIN":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={"success": False, "message": "Super Admin cannot view patient PHI.", "code": "FORBIDDEN"}
+        )
+
+    db = get_db()
+    if current_user.role == "PATIENT":
+        pat = db.patients.find_one({"userId": current_user.id})
+        if not pat:
+            try:
+                pat = db.patients.find_one({"userId": ObjectId(current_user.id)})
+            except Exception:
+                pass
+        if not pat or pat.get("patientId") != patient_id:
+            raise HTTPException(status_code=403, detail="Access denied to other patients' records.")
+
+    analyses = list(db.reportanalyses.find({"patientId": patient_id}).sort("analyzedAt", 1))
+    if not analyses:
+        # Fallback to finding reports for this patient then their analyses
+        reports = list(db.medicalreports.find({"patientId": patient_id}))
+        rep_ids = [r["reportId"] for r in reports]
+        analyses = list(db.reportanalyses.find({"reportId": {"$in": rep_ids}}).sort("analyzedAt", 1))
+
+    trends_map = {}
+    for a in analyses:
+        date_str = a.get("analyzedAt")
+        if isinstance(date_str, datetime):
+            date_str = date_str.strftime("%b %d, %Y")
+        elif not date_str:
+            date_str = "Recent"
+
+        kv_json = a.get("keyValuesJson")
+        if kv_json:
+            try:
+                kvs = json.loads(kv_json)
+                for item in kvs:
+                    param = item.get("parameter", "").strip()
+                    val = item.get("value", "")
+                    # Extract numeric value
+                    import re
+                    match = re.search(r"[-+]?\d*\.\d+|\d+", str(val))
+                    if match:
+                        num_val = float(match.group())
+                        if param not in trends_map:
+                            trends_map[param] = {
+                                "parameter": param,
+                                "unit": item.get("unit", ""),
+                                "normalRange": item.get("normalRange", ""),
+                                "dataPoints": []
+                            }
+                        trends_map[param]["dataPoints"].append({
+                            "date": str(date_str),
+                            "value": num_val,
+                            "status": item.get("status", "NORMAL")
+                        })
+            except Exception:
+                continue
+
+    return {
+        "success": True,
+        "data": {
+            "patientId": patient_id,
+            "biomarkers": list(trends_map.values())
+        }
+    }
+

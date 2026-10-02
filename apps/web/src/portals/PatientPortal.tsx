@@ -188,6 +188,7 @@ export const PatientPortal: React.FC = () => {
     { id: 'dashboard', label: 'My Health Home', icon: LayoutDashboard },
     { id: 'medicines', label: 'Today’s Medicines', icon: Pill },
     { id: 'reports', label: 'Understand My Reports', icon: FileText },
+    { id: 'trends', label: 'Biomarker Trends (Care+)', icon: Sparkles },
     { id: 'ai-assistant', label: 'Ask AI Assistant', icon: Bot },
     { id: 'appointments', label: 'Appointments & Follow-ups', icon: Calendar },
     { id: 'notifications', label: 'Reminders & Alerts', icon: Bell },
@@ -223,16 +224,16 @@ export const PatientPortal: React.FC = () => {
               {/* Top Quick Cards */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* Next Appointment Card */}
-                <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-                  <div className="flex items-center gap-2 text-sky-600 font-semibold text-xs mb-3">
+                <div className="bg-white p-5 rounded-2xl border border-slate-200/90 stat-card-3d preserve-3d">
+                  <div className="flex items-center gap-2 text-sky-600 font-semibold text-xs mb-3 translate-z-10">
                     <Calendar className="w-4 h-4" />
                     <span>NEXT APPOINTMENT</span>
                   </div>
                   {appointments.length > 0 ? (
-                    <div>
+                    <div className="translate-z-20">
                       <p className="font-bold text-slate-900 text-sm">{appointments[0].reason}</p>
                       <p className="text-xs text-slate-500 mt-1">With {appointments[0].doctor?.user?.fullName}</p>
-                      <div className="mt-3 inline-block px-2.5 py-1 bg-sky-50 text-sky-700 rounded-lg font-mono text-xs font-semibold">
+                      <div className="mt-3 inline-block px-2.5 py-1 bg-sky-50 text-sky-700 rounded-lg font-mono text-xs font-semibold badge-3d">
                         {new Date(appointments[0].dateTime).toLocaleDateString()} at {new Date(appointments[0].dateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </div>
                     </div>
@@ -242,16 +243,16 @@ export const PatientPortal: React.FC = () => {
                 </div>
 
                 {/* Upcoming Follow-Up Card */}
-                <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-                  <div className="flex items-center gap-2 text-amber-600 font-semibold text-xs mb-3">
+                <div className="bg-white p-5 rounded-2xl border border-slate-200/90 stat-card-3d preserve-3d">
+                  <div className="flex items-center gap-2 text-amber-600 font-semibold text-xs mb-3 translate-z-10">
                     <Clock className="w-4 h-4" />
                     <span>RECOMMENDED FOLLOW-UP</span>
                   </div>
                   {followUps.length > 0 ? (
-                    <div>
+                    <div className="translate-z-20">
                       <p className="font-bold text-slate-900 text-sm">{followUps[0].reason}</p>
                       <p className="text-xs text-slate-500 mt-1">Due: {new Date(followUps[0].dueDate).toLocaleDateString()}</p>
-                      <span className="mt-3 inline-block px-2.5 py-1 bg-amber-50 text-amber-800 rounded-lg text-xs font-semibold">
+                      <span className="mt-3 inline-block px-2.5 py-1 bg-amber-50 text-amber-800 rounded-lg text-xs font-semibold badge-3d">
                         Status: {followUps[0].status}
                       </span>
                     </div>
@@ -261,13 +262,13 @@ export const PatientPortal: React.FC = () => {
                 </div>
 
                 {/* Recent Report Card */}
-                <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-                  <div className="flex items-center gap-2 text-emerald-600 font-semibold text-xs mb-3">
+                <div className="bg-white p-5 rounded-2xl border border-slate-200/90 stat-card-3d preserve-3d">
+                  <div className="flex items-center gap-2 text-emerald-600 font-semibold text-xs mb-3 translate-z-10">
                     <FileText className="w-4 h-4" />
                     <span>RECENT LAB REPORT</span>
                   </div>
                   {reports.length > 0 ? (
-                    <div>
+                    <div className="translate-z-20">
                       <p className="font-bold text-slate-900 text-sm line-clamp-1">{reports[0].title}</p>
                       <p className="text-xs text-slate-500 mt-1">Analyzed by AI Assistant</p>
                       <button
@@ -275,7 +276,7 @@ export const PatientPortal: React.FC = () => {
                           setSelectedReport(reports[0]);
                           setActiveTab('reports');
                         }}
-                        className="mt-3 text-xs text-emerald-600 hover:text-emerald-700 font-semibold flex items-center gap-1"
+                        className="mt-3 text-xs text-emerald-600 hover:text-emerald-700 font-semibold flex items-center gap-1 cursor-pointer"
                       >
                         <span>Read Simple Explanation</span>
                         <ChevronRight className="w-3.5 h-3.5" />
@@ -288,7 +289,7 @@ export const PatientPortal: React.FC = () => {
               </div>
 
               {/* Today's Medicines Quick View */}
-              <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <div className="bg-white p-5 rounded-2xl border border-slate-200/90 stat-card-3d">
                 <div className="flex items-center justify-between mb-4">
                   <div>
                     <h3 className="text-sm font-bold text-slate-900">Today's Medicine Schedule</h3>
@@ -559,6 +560,116 @@ export const PatientPortal: React.FC = () => {
                   Select or upload a report to view the automated plain-language explanation.
                 </div>
               )}
+            </div>
+          )}
+
+          {/* 3.5 BIOMARKER TRENDS (CARE+ PREMIUM) */}
+          {activeTab === 'trends' && (
+            <div className="space-y-6">
+              {/* Care+ Header Banner */}
+              <div className="p-6 rounded-2xl bg-gradient-to-r from-purple-950 via-slate-900 to-sky-950 text-white border border-purple-800/40 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className="px-2.5 py-0.5 rounded-full bg-purple-500/30 text-purple-300 font-semibold text-[10px] border border-purple-500/40">
+                      CARE+ PREMIUM INTELLIGENCE
+                    </span>
+                    <span className="text-[11px] text-slate-400">Multi-Report Progression</span>
+                  </div>
+                  <h3 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                    <span>Biomarker Evolution Over Time</span>
+                    <Sparkles className="w-4 h-4 text-purple-400" />
+                  </h3>
+                  <p className="text-xs text-slate-300 mt-1 max-w-xl">
+                    Track critical blood parameters (Hemoglobin, Glucose, Creatinine, Platelets) across successive pathology visits to detect subtle physiological trends.
+                  </p>
+                </div>
+
+                <div className="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 text-right">
+                  <div className="text-xs text-slate-400">Current Status: <span className="text-emerald-400 font-bold">Active Patient</span></div>
+                  <div className="text-[11px] text-purple-300 mt-0.5">Family WhatsApp Alerts: Enabled</div>
+                </div>
+              </div>
+
+              {/* Sample Interactive Biomarker Trend Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Hemoglobin Trend */}
+                <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                  <div className="flex justify-between items-center mb-3">
+                    <div>
+                      <h4 className="font-bold text-slate-900 text-sm">Hemoglobin (Hb)</h4>
+                      <p className="text-[11px] text-slate-400">Oxygen-carrying capacity • Ref: 12.0 – 15.5 g/dL</p>
+                    </div>
+                    <span className="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 font-semibold text-xs font-mono">13.8 g/dL</span>
+                  </div>
+                  <div className="space-y-2 mt-4">
+                    <div className="flex justify-between items-center text-xs">
+                      <span className="text-slate-500">Visit 1 (3 mos ago):</span>
+                      <span className="font-mono text-slate-700 font-semibold">10.2 g/dL (Mild Low)</span>
+                    </div>
+                    <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                      <div className="bg-amber-400 h-1.5 rounded-full" style={{ width: '65%' }} />
+                    </div>
+
+                    <div className="flex justify-between items-center text-xs pt-1">
+                      <span className="text-slate-500">Visit 2 (1 mo ago):</span>
+                      <span className="font-mono text-slate-700 font-semibold">12.1 g/dL (Normal)</span>
+                    </div>
+                    <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                      <div className="bg-teal-400 h-1.5 rounded-full" style={{ width: '80%' }} />
+                    </div>
+
+                    <div className="flex justify-between items-center text-xs pt-1">
+                      <span className="text-slate-500">Latest Review:</span>
+                      <span className="font-mono text-emerald-600 font-bold">13.8 g/dL (Optimal)</span>
+                    </div>
+                    <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                      <div className="bg-emerald-500 h-1.5 rounded-full" style={{ width: '92%' }} />
+                    </div>
+                  </div>
+                  <p className="text-[11px] text-slate-400 mt-4 pt-3 border-t border-slate-100">
+                    AI Clinical Insight: Consistent upward normalization following prescribed iron supplements.
+                  </p>
+                </div>
+
+                {/* Fasting Blood Glucose Trend */}
+                <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                  <div className="flex justify-between items-center mb-3">
+                    <div>
+                      <h4 className="font-bold text-slate-900 text-sm">Fasting Blood Glucose</h4>
+                      <p className="text-[11px] text-slate-400">Metabolic glycemic control • Ref: 70 – 99 mg/dL</p>
+                    </div>
+                    <span className="px-2.5 py-1 rounded-full bg-sky-100 text-sky-700 font-semibold text-xs font-mono">94 mg/dL</span>
+                  </div>
+                  <div className="space-y-2 mt-4">
+                    <div className="flex justify-between items-center text-xs">
+                      <span className="text-slate-500">Visit 1 (3 mos ago):</span>
+                      <span className="font-mono text-slate-700 font-semibold">112 mg/dL (Pre-Diabetic)</span>
+                    </div>
+                    <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                      <div className="bg-amber-400 h-1.5 rounded-full" style={{ width: '75%' }} />
+                    </div>
+
+                    <div className="flex justify-between items-center text-xs pt-1">
+                      <span className="text-slate-500">Visit 2 (1 mo ago):</span>
+                      <span className="font-mono text-slate-700 font-semibold">102 mg/dL (Borderline)</span>
+                    </div>
+                    <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                      <div className="bg-sky-400 h-1.5 rounded-full" style={{ width: '68%' }} />
+                    </div>
+
+                    <div className="flex justify-between items-center text-xs pt-1">
+                      <span className="text-slate-500">Latest Review:</span>
+                      <span className="font-mono text-emerald-600 font-bold">94 mg/dL (Normal)</span>
+                    </div>
+                    <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                      <div className="bg-emerald-500 h-1.5 rounded-full" style={{ width: '60%' }} />
+                    </div>
+                  </div>
+                  <p className="text-[11px] text-slate-400 mt-4 pt-3 border-t border-slate-100">
+                    AI Clinical Insight: Glycemic levels have returned within the target laboratory fasting threshold.
+                  </p>
+                </div>
+              </div>
             </div>
           )}
 
